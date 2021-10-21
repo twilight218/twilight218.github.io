@@ -4,14 +4,19 @@
   <meta charset="utf-8">
   
   
-  <title>Hexo</title>
+  <title>子数组和为k问题 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="求一个数组中和为k的子数组的个数如果直接暴力做，复杂度为$$O(n^2)$$,不能通过。此题考虑前缀和+哈希表优化。我们定义$$pre[i]$$为$$[0,i]$$里所有的数的和，则$$pre[i]$$由$$pre[i-1] + nums[i]$$得来，即$$pre[i] &#x3D; pre[i-1]+nums[i]$$那么找到一个子数组$$[j…i]$$和为$$k$$这个条件可以转化成$$pre[j-1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="子数组和为k问题">
+<meta property="og:url" content="http://example.com/2021/10/21/%E5%AD%90%E6%95%B0%E7%BB%84%E5%92%8C%E4%B8%BAk%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="求一个数组中和为k的子数组的个数如果直接暴力做，复杂度为$$O(n^2)$$,不能通过。此题考虑前缀和+哈希表优化。我们定义$$pre[i]$$为$$[0,i]$$里所有的数的和，则$$pre[i]$$由$$pre[i-1] + nums[i]$$得来，即$$pre[i] &#x3D; pre[i-1]+nums[i]$$那么找到一个子数组$$[j…i]$$和为$$k$$这个条件可以转化成$$pre[j-1">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-10-21T13:14:30.000Z">
+<meta property="article:modified_time" content="2021-10-21T14:25:51.916Z">
 <meta property="article:author" content="twilight">
+<meta property="article:tag" content="题解">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -69,9 +74,7 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-子数组和为k问题" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-子数组和为k问题" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/10/21/%E5%AD%90%E6%95%B0%E7%BB%84%E5%92%8C%E4%B8%BAk%E9%97%AE%E9%A2%98/" class="article-date">
   <time class="dt-published" datetime="2021-10-21T13:14:30.000Z" itemprop="datePublished">2021-10-21</time>
@@ -84,8 +87,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/10/21/%E5%AD%90%E6%95%B0%E7%BB%84%E5%92%8C%E4%B8%BAk%E9%97%AE%E9%A2%98/">子数组和为k问题</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      子数组和为k问题
     </h1>
   
 
@@ -120,104 +123,19 @@
     </footer>
   </div>
   
-</article>
-
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-Hello-Blog" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/10/21/Hello-Blog/" class="article-date">
-  <time class="dt-published" datetime="2021-10-21T12:49:39.000Z" itemprop="datePublished">2021-10-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/10/21/Hello-Blog/">Hello Blog</a>
-    </h1>
+    <a href="/2021/10/21/Hello-Blog/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello Blog</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>2021年10月21日，我终于开通了个人博客。让我下定决心写博客的原因，是在昨天下午做到求数组中和为k的子数组个数的题目时，用到前缀和+哈希表，而这道题让我想起8月28号的CCPC网络赛F题Command Sequence也是一道前缀和+哈希表的题目，那时我却没有做出来，意识到自己已经打了将近半年的acm，知识还是很混乱的，所以下决心记录梳理一下知识。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/10/21/Hello-Blog/" data-id="ckv0yo06p0000zoux9krtcuk1" data-title="Hello Blog" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/experience/" rel="tag">experience</a></li></ul>
-
-    </footer>
-  </div>
   
 </article>
-
-
-
-  
-    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/10/21/hello-world/" class="article-date">
-  <time class="dt-published" datetime="2021-10-21T10:46:01.036Z" itemprop="datePublished">2021-10-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/10/21/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<p><a target="_blank" rel="noopener" href="https://twilight218.github.io/">writing</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/10/21/hello-world/" data-id="ckv0yj52j0000rgux5ne22zo8" data-title="Hello World" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
 </section>
