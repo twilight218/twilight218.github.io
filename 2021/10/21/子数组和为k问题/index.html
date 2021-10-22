@@ -1,102 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  
-  <title>子数组和为k问题 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="求一个数组中和为k的子数组的个数如果直接暴力做，复杂度为$$O(n^2)$$,不能通过。此题考虑前缀和+哈希表优化。我们定义$$pre[i]$$为$$[0,i]$$里所有的数的和，则$$pre[i]$$由$$pre[i-1] + nums[i]$$得来，即$$pre[i] &#x3D; pre[i-1]+nums[i]$$那么找到一个子数组$$[j…i]$$和为$$k$$这个条件可以转化成$$pre[j-1">
-<meta property="og:type" content="article">
-<meta property="og:title" content="子数组和为k问题">
-<meta property="og:url" content="http://example.com/2021/10/21/%E5%AD%90%E6%95%B0%E7%BB%84%E5%92%8C%E4%B8%BAk%E9%97%AE%E9%A2%98/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="求一个数组中和为k的子数组的个数如果直接暴力做，复杂度为$$O(n^2)$$,不能通过。此题考虑前缀和+哈希表优化。我们定义$$pre[i]$$为$$[0,i]$$里所有的数的和，则$$pre[i]$$由$$pre[i-1] + nums[i]$$得来，即$$pre[i] &#x3D; pre[i-1]+nums[i]$$那么找到一个子数组$$[j…i]$$和为$$k$$这个条件可以转化成$$pre[j-1">
-<meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-10-21T13:14:30.000Z">
-<meta property="article:modified_time" content="2021-10-21T14:25:51.916Z">
-<meta property="article:author" content="twilight">
-<meta property="article:tag" content="题解">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>子数组和为k问题 - Yrf&#039;s blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="yrf&#039;s blog"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="yrf&#039;s blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="求一个数组中和为k的子数组的个数"><meta property="og:type" content="blog"><meta property="og:title" content="子数组和为k问题"><meta property="og:url" content="http://example.com/2021/10/21/%E5%AD%90%E6%95%B0%E7%BB%84%E5%92%8C%E4%B8%BAk%E9%97%AE%E9%A2%98/"><meta property="og:site_name" content="Yrf&#039;s blog"><meta property="og:description" content="求一个数组中和为k的子数组的个数"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://example.com/img/og_image.png"><meta property="article:published_time" content="2021-10-21T13:14:30.000Z"><meta property="article:modified_time" content="2021-10-22T14:49:45.176Z"><meta property="article:author" content="叶润繁"><meta property="article:tag" content="题解"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/10/21/%E5%AD%90%E6%95%B0%E7%BB%84%E5%92%8C%E4%B8%BAk%E9%97%AE%E9%A2%98/"},"headline":"子数组和为k问题","image":["http://example.com/img/og_image.png"],"datePublished":"2021-10-21T13:14:30.000Z","dateModified":"2021-10-22T14:49:45.176Z","author":{"@type":"Person","name":"叶润繁"},"publisher":{"@type":"Organization","name":"Yrf's blog","logo":{"@type":"ImageObject","url":"http://example.com/img/logo.svg"}},"description":"求一个数组中和为k的子数组的个数"}</script><link rel="canonical" href="http://example.com/2021/10/21/%E5%AD%90%E6%95%B0%E7%BB%84%E5%92%8C%E4%B8%BAk%E9%97%AE%E9%A2%98/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.4.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Yrf&#039;s blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Gitter" href="https://gitter.im/"><i class="fab fa-wpexplorer"></i></a><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/twilight218/twilight218.github.io"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2021-10-21T13:14:30.000Z" title="2021/10/21 下午9:14:30">2021-10-21</time></span><span class="level-item">Updated&nbsp;<time dateTime="2021-10-22T14:49:45.176Z" title="2021/10/22 下午10:49:45">2021-10-22</time></span><span class="level-item"><a class="link-muted" href="/categories/science/">science</a></span><span class="level-item">7 minutes read (About 975 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">子数组和为k问题</h1><div class="content"><h3 id="求一个数组中和为k的子数组的个数"><a href="#求一个数组中和为k的子数组的个数" class="headerlink" title="求一个数组中和为k的子数组的个数"></a>求一个数组中和为k的子数组的个数</h3><span id="more"></span>
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-
-  
-<meta name="generator" content="Hexo 5.4.0"></head>
-
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-子数组和为k问题" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/10/21/%E5%AD%90%E6%95%B0%E7%BB%84%E5%92%8C%E4%B8%BAk%E9%97%AE%E9%A2%98/" class="article-date">
-  <time class="dt-published" datetime="2021-10-21T13:14:30.000Z" itemprop="datePublished">2021-10-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      子数组和为k问题
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="求一个数组中和为k的子数组的个数"><a href="#求一个数组中和为k的子数组的个数" class="headerlink" title="求一个数组中和为k的子数组的个数"></a>求一个数组中和为k的子数组的个数</h3><p>如果直接暴力做，复杂度为$$O(n^2)$$,不能通过。此题考虑前缀和+哈希表优化。我们定义$$pre[i]$$为$$[0,i]$$里所有的数的和，则$$pre[i]$$由$$pre[i-1] + nums[i]$$得来，即<br>$$<br>pre[i] = pre[i-1]+nums[i]<br>$$<br>那么找到一个子数组$$[j…i]$$和为$$k$$这个条件可以转化成<br>$$<br>pre[j-1]==pre[i]-k<br>$$<br><strong>于是问题就变为考虑以$$i$$结尾的和为$$k$$​​的连续子数组时，只要统计有多少个前缀和为$$pre[i]-k$$的$$pre[j]$$​​即可。</strong></p>
+<p>如果直接暴力做，复杂度为$$O(n^2)$$,不能通过。此题考虑前缀和+哈希表优化。我们定义$$pre[i]$$为$$[0,i]$$里所有的数的和，则$$pre[i]$$由$$pre[i-1] + nums[i]$$得来，即<br>$$<br>pre[i] = pre[i-1]+nums[i]<br>$$<br>那么找到一个子数组$$[j…i]$$和为$$k$$这个条件可以转化成<br>$$<br>pre[j-1]==pre[i]-k<br>$$<br><strong>于是问题就变为考虑以$$i$$结尾的和为$$k$$​​的连续子数组时，只要统计有多少个前缀和为$$pre[i]-k$$的$$pre[j]$$​​即可。</strong></p>
 <p>我们建立哈希表$$mp$$，以和为键值，到当前位置出现次数为对应值，记录$$pre[i]$$​出现的次数，从左往右边更新边计算答案，那么以$$i$$为结尾的答案$$mp[pre[i]-k]$$即可在$$O(1)$$时间内得到。最后答案即为所有$$mp[pre[i]-k]$$的和。</p>
 <p>需要注意的是，因为我们从左往右边更新边计算时保证了$$mp[pre[i]-k]$$里记录的$$pre[j]$$​的下标范围是$$0 \leq j \leq i$$.同时，由于$$pre[i]$$只与前一项$$pre[j-1]$$有关，因此我们不必建前缀和数组，直接使用$$pre$$变量来记录和即可。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">subarraySum</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; nums,<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    unordered_map&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; mp;</span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>,pre = <span class="number">0</span>;</span><br><span class="line">    mp[<span class="number">0</span>] = <span class="number">1</span>;  <span class="comment">//当前前缀和就为k时是存在一个子数组的</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> x:nums)&#123;</span><br><span class="line">        pre += x;</span><br><span class="line">        <span class="keyword">if</span>(mp.<span class="built_in">find</span>(pre-k) != mp.<span class="built_in">end</span>())</span><br><span class="line">            count += mp[pre-k];</span><br><span class="line">        mp[pre]++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -110,134 +15,68 @@
 <h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>此题我们直接将每个字符看成一个数字，且上下互为相反数，左右互为相反数，那么就是找到这个数字序列有多少个和为$$0$$的子序列。依旧是前缀和+哈希表结构。需要注意的是，由于一个$$2$$可以由两个$$-1$$​抵消，所以上下和左右代表的数字不能太接近。这里字符串长度最大为$$10^5$$，所以我们可以让$$U$$和$$D$$代表$$1$$和$$-1$$，让$$L$$和$$R$$代表$$100000$$和$$-100000$$​。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unordered_map&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">1e5</span> + <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> t, n;</span><br><span class="line">ll a[maxn];</span><br><span class="line"><span class="keyword">char</span> s[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cin &gt;&gt; t;</span><br><span class="line">    <span class="keyword">while</span> (t--)</span><br><span class="line">    &#123;</span><br><span class="line">        cin &gt;&gt; n;</span><br><span class="line">        cin &gt;&gt; s + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (s[i] == <span class="string">&#x27;U&#x27;</span>)</span><br><span class="line">                a[i] = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (s[i] == <span class="string">&#x27;D&#x27;</span>)</span><br><span class="line">                a[i] = <span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">if</span> (s[i] == <span class="string">&#x27;L&#x27;</span>)</span><br><span class="line">                a[i] = <span class="number">100000</span>;</span><br><span class="line">            <span class="keyword">if</span> (s[i] == <span class="string">&#x27;R&#x27;</span>)</span><br><span class="line">                a[i] = <span class="number">-100000</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        unordered_map&lt;ll, <span class="keyword">int</span>&gt; mp;</span><br><span class="line">        mp[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        ll pre = <span class="number">0</span>, count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            pre += a[i];</span><br><span class="line">            <span class="keyword">if</span> (mp.<span class="built_in">find</span>(pre) != mp.<span class="built_in">end</span>())</span><br><span class="line">                count += mp[pre];</span><br><span class="line">            mp[pre]++;</span><br><span class="line">        &#125;</span><br><span class="line">        cout &lt;&lt; count &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/10/21/%E5%AD%90%E6%95%B0%E7%BB%84%E5%92%8C%E4%B8%BAk%E9%97%AE%E9%A2%98/" data-id="ckv11in4x0000xgux6hf9a1ge" data-title="子数组和为k问题" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%A2%98%E8%A7%A3/" rel="tag">题解</a></li></ul>
-
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-  
-    <a href="/2021/10/21/Hello-Blog/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Hello Blog</div>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/experience/" rel="tag">experience</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A2%98%E8%A7%A3/" rel="tag">题解</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/experience/" style="font-size: 10px;">experience</a> <a href="/tags/%E9%A2%98%E8%A7%A3/" style="font-size: 10px;">题解</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2021/10/21/%E5%AD%90%E6%95%B0%E7%BB%84%E5%92%8C%E4%B8%BAk%E9%97%AE%E9%A2%98/">子数组和为k问题</a>
-          </li>
-        
-          <li>
-            <a href="/2021/10/21/Hello-Blog/">Hello Blog</a>
-          </li>
-        
-          <li>
-            <a href="/2021/10/21/hello-world/">Hello World</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2021 twilight<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
-</body>
-</html>
+</div><div class="article-licensing box"><div class="licensing-title"><p>子数组和为k问题</p><p><a href="http://example.com/2021/10/21/子数组和为k问题/">http://example.com/2021/10/21/子数组和为k问题/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>叶润繁</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2021-10-21</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2021-10-22</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/%E9%A2%98%E8%A7%A3/">题解</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2021/10/21/Hello-Blog/"><span class="level-item">Hello Blog</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/avatar.png" alt="叶润繁"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">叶润繁</p><p class="is-size-6 is-block">Web Developer</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>WUT</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">2</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/twilight218" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/twilight218"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://facebook.com"><i class="fab fa-facebook"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com"><i class="fab fa-twitter"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Dribbble" href="https://dribbble.com"><i class="fab fa-dribbble"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#求一个数组中和为k的子数组的个数"><span class="level-left"><span class="level-item">1</span><span class="level-item">求一个数组中和为k的子数组的个数</span></span></a></li><li><a class="level is-mobile" href="#求一个数组中和为数组长度的子数组个数"><span class="level-left"><span class="level-item">2</span><span class="level-item">求一个数组中和为数组长度的子数组个数</span></span></a></li><li><a class="level is-mobile" href="#求一个数组中和为k的最长子数组长度"><span class="level-left"><span class="level-item">3</span><span class="level-item">求一个数组中和为k的最长子数组长度</span></span></a></li><li><a class="level is-mobile" href="#求一个01串中最长01数量相等的子串"><span class="level-left"><span class="level-item">4</span><span class="level-item">求一个01串中最长01数量相等的子串</span></span></a></li><li><a class="level is-mobile" href="#2021-CCPC-Command-Sequence"><span class="level-left"><span class="level-item">5</span><span class="level-item">2021 CCPC Command Sequence</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#题意"><span class="level-left"><span class="level-item">5.1</span><span class="level-item">题意</span></span></a></li><li><a class="level is-mobile" href="#分析"><span class="level-left"><span class="level-item">5.2</span><span class="level-item">分析</span></span></a></li></ul></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="links"><div class="card-content"><div class="menu"><h3 class="menu-label">Links</h3><ul class="menu-list"><li><a class="level is-mobile" href="https://exgod22356.github.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">exgod</span></span><span class="level-right"><span class="level-item tag">exgod22356.github.io</span></span></a></li><li><a class="level is-mobile" href="https://zechariah2001.github.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Zechariah</span></span><span class="level-right"><span class="level-item tag">zechariah2001.github.io</span></span></a></li></ul></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/life/"><span class="level-start"><span class="level-item">life</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/science/"><span class="level-start"><span class="level-item">science</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="column-right-shadow is-hidden-widescreen"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3"><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-10-21T13:14:30.000Z">2021-10-21</time></p><p class="title"><a href="/2021/10/21/%E5%AD%90%E6%95%B0%E7%BB%84%E5%92%8C%E4%B8%BAk%E9%97%AE%E9%A2%98/">子数组和为k问题</a></p><p class="categories"><a href="/categories/science/">science</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2021-10-21T12:49:39.000Z">2021-10-21</time></p><p class="title"><a href="/2021/10/21/Hello-Blog/">Hello Blog</a></p><p class="categories"><a href="/categories/life/">life</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2021/10/"><span class="level-start"><span class="level-item">October 2021</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/experience/"><span class="tag">experience</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A2%98%E8%A7%A3/"><span class="tag">题解</span><span class="tag">1</span></a></div></div></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Yrf&#039;s blog" height="28"></a><p class="is-size-7"><span>&copy; 2021 叶润繁</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.js" defer></script><script>window.addEventListener("load", function() {
+            document.querySelectorAll('[role="article"] > .content').forEach(function(element) {
+                renderMathInElement(element);
+            });
+        });</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
