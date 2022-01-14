@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>数据链路层 - Yrf&#039;s blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="yrf&#039;s blog"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="yrf&#039;s blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="基本概念与基本问题数据链路层属于计算机网络的底层，使用的信道主要有点对点信道和广播信道。"><meta property="og:type" content="blog"><meta property="og:title" content="数据链路层"><meta property="og:url" content="https://twilight218.github.io/2022/01/14/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/"><meta property="og:site_name" content="Yrf&#039;s blog"><meta property="og:description" content="基本概念与基本问题数据链路层属于计算机网络的底层，使用的信道主要有点对点信道和广播信道。"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://twilight218.github.io/image/Internet/数据链路.png"><meta property="og:image" content="https://twilight218.github.io/image/Internet/封装成帧.png"><meta property="og:image" content="https://twilight218.github.io/image/Internet/透明传输.png"><meta property="og:image" content="https://twilight218.github.io/image/Internet/冗余码.png"><meta property="og:image" content="https://twilight218.github.io/image/Internet/PPP帧.png"><meta property="og:image" content="https://twilight218.github.io/image/Internet/PPP工作.png"><meta property="og:image" content="https://twilight218.github.io/image/Internet/拓扑.png"><meta property="og:image" content="https://twilight218.github.io/image/Internet/利用率.png"><meta property="og:image" content="https://twilight218.github.io/image/Internet/以太网帧.png"><meta property="article:published_time" content="2022-01-14T11:18:06.000Z"><meta property="article:author" content="叶润繁"><meta property="article:tag" content="计算机网络"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/image/Internet/数据链路.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://twilight218.github.io/2022/01/14/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/"},"headline":"数据链路层","image":["https://twilight218.github.io/image/Internet/数据链路.png","https://twilight218.github.io/image/Internet/封装成帧.png","https://twilight218.github.io/image/Internet/透明传输.png","https://twilight218.github.io/image/Internet/冗余码.png","https://twilight218.github.io/image/Internet/PPP帧.png","https://twilight218.github.io/image/Internet/PPP工作.png","https://twilight218.github.io/image/Internet/拓扑.png","https://twilight218.github.io/image/Internet/利用率.png","https://twilight218.github.io/image/Internet/以太网帧.png"],"datePublished":"2022-01-14T11:18:06.000Z","author":{"@type":"Person","name":"叶润繁"},"publisher":{"@type":"Organization","name":"Yrf's blog","logo":{"@type":"ImageObject","url":"https://twilight218.github.io/img/logo.svg"}},"description":"基本概念与基本问题数据链路层属于计算机网络的底层，使用的信道主要有点对点信道和广播信道。"}</script><link rel="canonical" href="https://twilight218.github.io/2022/01/14/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.4.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Yrf&#039;s blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Gitter" href="https://gitter.im/"><i class="fab fa-wpexplorer"></i></a><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/twilight218/twilight218.github.io"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2022-01-14T11:18:06.000Z" title="2022/1/14 下午7:18:06">2022-01-14</time></span><span class="level-item"><a class="link-muted" href="/categories/science/">science</a></span><span class="level-item">27 minutes read (About 4013 words)</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>&nbsp;visits</span></div></div><h1 class="title is-3 is-size-4-mobile">数据链路层</h1><div class="content"><h3 id="基本概念与基本问题"><a href="#基本概念与基本问题" class="headerlink" title="基本概念与基本问题"></a>基本概念与基本问题</h3><p>数据链路层属于计算机网络的底层，使用的信道主要有点对点信道和广播信道。</p>
+<span id="more"></span>
+
+<h4 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h4><ul>
+<li>在研究数据链路层的问题时，许多情况下只关心在协议栈中水平方向的各数据链路层，不考虑物理层中运输的问题。</li>
+</ul>
+<img src="/image/Internet/数据链路.png" style="zoom:80%;" />
+
+<ul>
+<li>链路：从一个结点到相邻结点的一段物理链路，中间没有其他结点。</li>
+<li>数据链路：除物理链路外，还需要加上必要的通信协议来控制数据的传输。把实现这些协议的硬件和软件加到链路上，就构成了数据链路。网络适配器（也就是网卡），用来实现数据链路上的协议。</li>
+<li>帧：数据链路层数据单元。</li>
+</ul>
+<h4 id="三个基本问题"><a href="#三个基本问题" class="headerlink" title="三个基本问题"></a>三个基本问题</h4><ul>
+<li>封装成帧：将IP数据报的前后添加首部和尾部来进行帧定界。当数据是ASCII码组成的文本文件时，可使用特殊的帧定界符。控制字符SOH放在帧的最前面，表示帧的首部开始。EOT表示帧的结束。SOH和EOT只是名称，二进制为00000001和00000100.</li>
+</ul>
+<img src="/image/Internet/封装成帧.png" style="zoom:80%;" />
+
+<ul>
+<li>透明传输：如果在IP数据报中如果有一个和帧尾部一样的8位二进制数，则会提前结束接收数据，这样数据就被破坏了。解决方式是：发送端的数据链路层在数据中出现控制字符SOH或者EOT的前面插入一个转义字符“ESC”(00011011),而在接收端的数据链路层在把数据送往网络层之前删除这个插入的转义字符。这种方法称为<strong>字节填充</strong>。当接收端收到连续两个转义字符时，就删除前面的一个。</li>
+</ul>
+<img src="/image/Internet/透明传输.png" style="zoom:80%;" />
+
+<ul>
+<li>差错检测：传输过程中可能产生比特差错：1可能变成0,0可能变成1。循环冗余检验CRC：在发送端，先将数据分组，每组k个比特。假定待发送数据为M-101001，k=6.先在M后面添加差错检测用的n为冗余码，一共发送n+k位。冗余码的计算：用二进制的模2运算进行$2^n$​乘M的运算，相当于在M后加上n个0.得到的n+k位数除以事先选定好的长度为n+1位的除数P，得出商为Q而余数是R，余数比除数少一位，余数即冗余码FCS。</li>
+</ul>
+<img src="/image/Internet/冗余码.png" style="zoom:60%;" />
+
+<p>在接收端，把接收到的每一个帧都除以同样的除数P，如果余数为0，则这个帧没有差错，否则有差错，舍弃这个帧。</p>
+<p>这种冗余检错校验的特点：</p>
+<ol>
+<li>并不能确定究竟是哪一个或哪几个比特出现了差错。</li>
+<li>只要经过严格的挑选，并使用位数足够多的除数 P，那么出现检测不到的差错的概率就很小很小。</li>
+<li>只能是无差错接受：凡是接受的帧（即不包括丢弃的帧），我们都能以非常接近于 1 的概率认为这些帧在传输过程中没有产生差错”。也就是说：“凡是接收端数据链路层接受的帧都没有传输差错”（有差错的帧就丢弃而不接受）。</li>
+<li>这是”不可靠“的，是无比特差错，而不是无传输差错的检测机制，要做到可靠的 还要加上确认和重传机制。即考虑帧重复、帧丢失、帧乱序的情况。</li>
+</ol>
+<h3 id="点对点协议PPP"><a href="#点对点协议PPP" class="headerlink" title="点对点协议PPP"></a>点对点协议PPP</h3><p>是点对点信道数据链路层协议。互联网用户需要连接到某个ISP才能连入互联网。PPP协议就是用户计算机和ISP进行通信时所使用的数据链路层协议。</p>
+<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><ul>
+<li>简单：接收方每接收一个帧，就进行CRC检验，检验正确，就收下，否则就丢弃，它是不可靠传输，所以这就是简单的原因。</li>
+<li>封装成帧：规定特殊字符作为帧定界符。</li>
+<li>透明性：即透明传输。</li>
+<li>多中网络协议：在同一条物理链路上同时支持多种网络层协议(如IP何IPX等)的运行。</li>
+<li>多种类型链路：多种类型链路：比如，串行的、并行的，（串行：一个比特一个比特发送，只需要一条线路，并行：一次性传输n个比特，所以需要n条线路，所以叫并行）同步的、异步的（同步：以稳定的比特流的形式传输 异步：以字节为独立的传输单位，字节跟字节之间的时间间隔不确定，但字节中的每个比特仍是同步的。），低速或高速、电或光，等不同类型的链路都能支持。</li>
+<li>差错检测：CRC检测。</li>
+<li>检测连接状态：检测点跟点之间的连接状态，也就是在PC机和ISP之间的线路。</li>
+<li>最大传送单元：MTU，帧的<strong>数据部分</strong>最大长度。</li>
+<li>网路地址协商。</li>
+</ul>
+<h4 id="PPP协议的组成"><a href="#PPP协议的组成" class="headerlink" title="PPP协议的组成"></a>PPP协议的组成</h4><ol>
+<li>数据链路层协可以用于异步串行或同步串行介质，通俗讲也就是可以适应多种性质的链路。</li>
+<li>使用LCP(链路控制协议)建立并维护数据链路连接， 也就是上面讲的一些维护链路连接、检测连接状态等功能，就是用它来实现的。</li>
+<li>网络控制协议(NCP)允许点到点连接上使用多种网络层协议，也就是因为跟网络层连接在一起，所以需要支持上一层的多种协议，这样才能完成一系列的功能，比如，网络层地址协商。</li>
+</ol>
+<h4 id="PPP协议的帧格式"><a href="#PPP协议的帧格式" class="headerlink" title="PPP协议的帧格式"></a>PPP协议的帧格式</h4><img src="/image/Internet/PPP帧.png" style="zoom:80%;" />
+
+<p>标志字段F就是PPP帧的定界符。</p>
+<ul>
+<li>字节填充：使用的是字节传输，也就是异步，所有的PPP帧的长度都是整数字节，所以会出现IP数据包中有字节跟开始结束标志字节相同的问题。解决方式：IP数据报中出现0x7E字节 ： 转变为  0x7D、0x5E；IP数据报中出现0x7D：0x7D、0x5D；IP数据报中出现ASCII码的控制字符，则在该控制字符前面加0x7D。在接收端做相反的操作。</li>
+<li>零比特填充：使用的是比特流传输(一连串的比特连续传送)，也就是同步传输。在发送端扫描整个数据部分，只要发现5个连续1，则立即填入一个0.这样保证不会出现6个连续的1，导致和定界符0x7E相等。在接收端，当发现连续的5个1，就把后面的0删除。</li>
+</ul>
+<h4 id="PPP协议工作状态"><a href="#PPP协议工作状态" class="headerlink" title="PPP协议工作状态"></a>PPP协议工作状态</h4><img src="/image/Internet/PPP工作.png" style="zoom:80%;" />
+
+<p>为什么PPP协议不用可靠传输？</p>
+<ol>
+<li>在数据链路层出现差错的概率不大时，使用比较简单的 PPP 协议较为合理。</li>
+<li>在因特网环境下，PPP 的信息字段放入的数据是 IP 数据报。数据链路层的可靠传输并不能够保证网络层的传输也是可靠的。</li>
+<li>帧检验序列 FCS 字段可保证无差错传输。</li>
+</ol>
+<h3 id="广播信道的数据链路层"><a href="#广播信道的数据链路层" class="headerlink" title="广播信道的数据链路层"></a>广播信道的数据链路层</h3><ul>
+<li>以太网：以太网是通信协议标准，该标准定义了在局域网（LAN）中采用的电缆类型和信号处理方法，比如有CSMA/CD协议。</li>
+<li>局域网：在较小范围内组件的网络，通过交换器什么的连接各个PC机，比如一个实验室，一栋楼，一个校园内，这都是局域网，拿网线将两台计算机连在一起，这也能算是局域网。</li>
+<li>广播信道：就是一台PC机发送数据给另一台PC机，在同一个局域网中的计算机都能接收到该数据，这就像广播一样，所以这种就叫做广播信道。</li>
+<li>局域网常见拓扑结构</li>
+</ul>
+<img src="/image/Internet/拓扑.png" style="zoom:50%;" />
+
+<ul>
+<li>为了通信的简便，以太网采取了两种重要的措施。<ul>
+<li>采用较为灵活的无连接的工作方式<ul>
+<li>不必先建立连接就可以直接发送数据。</li>
+<li>n对发送的数据帧不进行编号，也不要求对方发回确认。</li>
+<li>这样做的理由是局域网信道的质量很好，因信道质量产生差错的概率是很小的。</li>
+<li>以太网提供的服务是<strong>不可靠的交付</strong>，即尽最大努力的交付。</li>
+<li>当目的站收到有差错的数据帧时就丢弃此帧，其他什么也不做。<strong>差错的纠正由高层来决定</strong>。</li>
+<li>如果高层发现丢失了一些数据而进行重传，但以太网并不知道这是一个重传的帧，而是当作一个新的数据帧来发送。 </li>
+</ul>
+</li>
+<li>以太网发送的数据都使用曼彻斯特 (Manchester) 编码。</li>
+</ul>
+</li>
+</ul>
+<h4 id="CSMA-CD协议（半双工通信）"><a href="#CSMA-CD协议（半双工通信）" class="headerlink" title="CSMA/CD协议（半双工通信）"></a>CSMA/CD协议（半双工通信）</h4><ul>
+<li>多点接入：表示许多计算机以多点接入的方式连接在一根总线上。</li>
+<li>载波监听：指每一个站在发送数据之前先要检测一下总线上是否有其他计算机在发送数据，如果有，则暂时不要发送数据，以免发生碰撞。</li>
+<li>碰撞检测：也就是边发送边监听，当一个站检测到的信号电压摆动值超过一定的门限值时，就认为总线上至少有两个站同时在发送数据，表明产生了碰撞。</li>
+</ul>
+<p><strong>工作流程</strong>：</p>
+<ol>
+<li>准备发送：适配器从网络层获得一个分组，加上以太网的首部和尾部，组成以太网帧。发送之前，<strong>必须先检测信道</strong>。</li>
+<li>检测信道：若检测到信道忙，则应不停地检测，一直等待信道转为空闲。若检测到信道空闲，并在 96 比特时间内信道保持空闲（保证了帧间最小间隔），就发送这个帧。</li>
+<li>检查碰撞：在发送过程中仍不停地检测信道，即网络适配器要边发送边监听。这里只有两种可能性：<ol>
+<li>发送成功：在争用期内一直未检测到碰撞。这个帧肯定能够发送成功。发送完毕后，其他什么也不做。然后回到 (1)。</li>
+<li>发送失败：在争用期内检测到碰撞。这时立即停止发送数据，并按规定发送人为干扰信号。适配器接着就执行<strong>指数退避算法</strong>，等待 <em>r</em> 倍 512 比特时间后，返回到步骤 (2)，继续检测信道。但若重传达 16 次仍不能成功，<strong>则停止重传而向上报错</strong>。</li>
+</ol>
+</li>
+</ol>
+<p><strong>争用期</strong></p>
+<ul>
+<li>以太网的端到端往返时延 2<em>t</em> 称为争用期，或碰撞窗口。</li>
+<li>经过争用期这段时间还没有检测到碰撞，才能肯定这次发送不会发生碰撞。</li>
+</ul>
+<p><strong>二进制指数退避算法</strong></p>
+<p>发生碰撞的站在停止发送数据后，要推迟（退避）一个随机时间才能再发送数据。</p>
+<ul>
+<li>基本退避时间取为争用期 2<em>t</em>。</li>
+<li>从整数集合 [0, 1, … , (2<em>k</em> -1)] 中随机地取出一个数，记为 <em>r</em>。重传所需的时延就是 <em>r</em> 倍的基本退避时间。</li>
+<li>参数 <em>k</em> 按下面的公式计算：<em>k</em> = Min[重传次数, 10]。</li>
+<li>n当 <em>k</em> $\leq$​10 时，参数 <em>k</em> 等于重传次数。</li>
+<li>当重传达 16 次仍不能成功时即丢弃该帧，并向高层报告.</li>
+</ul>
+<p><strong>争用期长度</strong></p>
+<ul>
+<li>10 Mbit/s 以太网取 51.2 $\mu s$​​ 为争用期的长度。</li>
+<li>对于 10 Mbit/s 以太网，在争用期内可发送 512 bit，即 64 字节。</li>
+<li>这意味着：以太网在发送数据时，若前 64 字节没有发生冲突，则后续的数据就不会发生冲突。</li>
+<li>由于一检测到冲突就立即中止发送，这时已经发送出去的数据一定小于 64 字节。以太网规定了最短有效帧长为 64 字节，<strong>凡长度小于 64 字节的帧都是由于冲突而异常中止的无效帧</strong>。</li>
+</ul>
+<p><strong>强化碰撞</strong></p>
+<p>当发送数据的站一旦发现发生了碰撞时：立即停止发送数据，再继续发送若干比特的人为干扰信号 (jamming signal)，以便让所有用户都知道现在已经发生了碰撞。 </p>
+<h4 id="以太网的信道利用率"><a href="#以太网的信道利用率" class="headerlink" title="以太网的信道利用率"></a>以太网的信道利用率</h4><img src="/image/Internet/利用率.png" style="zoom:80%;" />
+$$
+\alpha = \frac{\tau}{T_0}
+$$
+*α* →0，表示一发生碰撞就立即可以检测出来， 并立即停止发送，因而信道利用率很高。*α* 越大，表明争用期所占的比例增大，每发生一次碰撞就浪费许多信道资源，使得信道利用率明显降低。为提高利用率，以太网的参数*a*的值应当尽可能小些。对以太网参数 *α* 的要求是：
+
+<ol>
+<li>当数据率一定时，以太网的连线的长度受到限制，否则 $\tau$​的数值会太大。</li>
+<li>以太网的帧长不能太短，否则 $T_0$​的值会太小，使 <em>α</em> 值太大。</li>
+</ol>
+<h3 id="以太网的MAC层"><a href="#以太网的MAC层" class="headerlink" title="以太网的MAC层"></a>以太网的MAC层</h3><ul>
+<li><p>在局域网中，硬件地址又称为物理地址，或 MAC 地址，指计算机固化在适配器的ROM中的地址。</p>
+</li>
+<li><p>MAC帧格式：48bit，6个字节，前3个字节是由管理机构给各个厂家分配的。也就是说如果有厂家想生产网卡这类需要mac地址的东西，必须先像管理机构申请前三位字节，所以网卡上的前三个字节就代表着某个厂家，后三个字节就是由厂家自己来设定的。</p>
+</li>
+</ul>
+<img src="/image/Internet/以太网帧.png" style="zoom:80%;" />
+
+<ul>
+<li><p>发送的数据帧最小要是64个字节,6个目的MAC地址，6个源MAC地址，2个字节代表数据包的类型，还有4个字节是FCS，用来进行CRC算法检测的，剩下的46个字节就是数据包最少要发送的字节数了，如果数据包实际发的少于46，那么会给这个数据包自动补充0，来达到需要的字节数。</p>
+</li>
+<li><p>插入的8个字节中，前7个字节用来使发送的数据帧的的比特同步，也叫作前同步码，最后一个字节，帧的开始定界符，也就是告诉接收方，从这个字节开始，后面就是MAC帧了。在接受MAC帧后，<strong>并不能马上识别出帧开始定界符，没有那么快的反应分辨出来，所以需要在前面加同步码</strong>，使接收方有反应的时间，所以同步码都是1010101010101这样的bit。前7个字节的同步码跟最后一个字节中的前6个bit位相同。</p>
+</li>
+</ul>
+</div><div class="article-licensing box"><div class="licensing-title"><p>数据链路层</p><p><a href="https://twilight218.github.io/2022/01/14/数据链路层/">https://twilight218.github.io/2022/01/14/数据链路层/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>叶润繁</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2022-01-14</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2022/01/13/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%A6%82%E8%BF%B0/"><span class="level-item">计算机网络概述</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="/img/kele.jpg" alt="叶润繁"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">叶润繁</p><p class="is-size-6 is-block">Web Developer</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>WUT</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">15</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">14</p></a></div></div></nav></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#基本概念与基本问题"><span class="level-left"><span class="level-item">1</span><span class="level-item">基本概念与基本问题</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#基本概念"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">基本概念</span></span></a></li><li><a class="level is-mobile" href="#三个基本问题"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">三个基本问题</span></span></a></li></ul></li><li><a class="level is-mobile" href="#点对点协议PPP"><span class="level-left"><span class="level-item">2</span><span class="level-item">点对点协议PPP</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#特点"><span class="level-left"><span class="level-item">2.1</span><span class="level-item">特点</span></span></a></li><li><a class="level is-mobile" href="#PPP协议的组成"><span class="level-left"><span class="level-item">2.2</span><span class="level-item">PPP协议的组成</span></span></a></li><li><a class="level is-mobile" href="#PPP协议的帧格式"><span class="level-left"><span class="level-item">2.3</span><span class="level-item">PPP协议的帧格式</span></span></a></li><li><a class="level is-mobile" href="#PPP协议工作状态"><span class="level-left"><span class="level-item">2.4</span><span class="level-item">PPP协议工作状态</span></span></a></li></ul></li><li><a class="level is-mobile" href="#广播信道的数据链路层"><span class="level-left"><span class="level-item">3</span><span class="level-item">广播信道的数据链路层</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#CSMA-CD协议（半双工通信）"><span class="level-left"><span class="level-item">3.1</span><span class="level-item">CSMA/CD协议（半双工通信）</span></span></a></li><li><a class="level is-mobile" href="#以太网的信道利用率"><span class="level-left"><span class="level-item">3.2</span><span class="level-item">以太网的信道利用率</span></span></a></li></ul></li><li><a class="level is-mobile" href="#以太网的MAC层"><span class="level-left"><span class="level-item">4</span><span class="level-item">以太网的MAC层</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/life/"><span class="level-start"><span class="level-item">life</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/science/"><span class="level-start"><span class="level-item">science</span></span><span class="level-end"><span class="level-item tag">14</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Git/"><span class="tag">Git</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/JDBC/"><span class="tag">JDBC</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/JavaWeb/"><span class="tag">JavaWeb</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/acm/"><span class="tag">acm</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/experience/"><span class="tag">experience</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/java%E5%9F%BA%E7%A1%80/"><span class="tag">java基础</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/java%E9%9B%86%E5%90%88/"><span class="tag">java集合</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/"><span class="tag">位运算</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%9B%BE%E8%AE%BA/"><span class="tag">图论</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%90%9C%E7%B4%A2/"><span class="tag">搜索</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/"><span class="tag">树状数组</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%BA%BF%E6%AE%B5%E6%A0%91/"><span class="tag">线段树</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"><span class="tag">计算机网络</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A2%98%E8%A7%A3/"><span class="tag">题解</span><span class="tag">2</span></a></div></div></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Yrf&#039;s blog" height="28"></a><p class="is-size-7"><span>&copy; 2022 叶润繁</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a><br><span id="busuanzi_container_site_uv">Visited by <span id="busuanzi_value_site_uv">0</span> users</span></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.js" defer></script><script>window.addEventListener("load", function() {
+            document.querySelectorAll('[role="article"] > .content').forEach(function(element) {
+                renderMathInElement(element);
+            });
+        });</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
