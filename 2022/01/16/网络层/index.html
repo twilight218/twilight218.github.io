@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>网络层 - Yrf&#039;s blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="yrf&#039;s blog"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="yrf&#039;s blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="互联网的先驱者提出一种崭新的网络设计思路，不同于电信网提供端到端的可靠传输服务，网络层向上只提供简单灵活的、无连接的、尽最大努力交付的数据报服务。如果主机（即端系统）中的进程之间的通信需要是可靠的，那么就由网络的主机中的运输层负责可靠交付（包括差错处理、流量控制等） 。采用这种设计思路的好处是：网络的造价大大降低，运行方式灵活，能够适应多种应用。"><meta property="og:type" content="blog"><meta property="og:title" content="网络层"><meta property="og:url" content="https://twilight218.github.io/2022/01/16/%E7%BD%91%E7%BB%9C%E5%B1%82/"><meta property="og:site_name" content="Yrf&#039;s blog"><meta property="og:description" content="互联网的先驱者提出一种崭新的网络设计思路，不同于电信网提供端到端的可靠传输服务，网络层向上只提供简单灵活的、无连接的、尽最大努力交付的数据报服务。如果主机（即端系统）中的进程之间的通信需要是可靠的，那么就由网络的主机中的运输层负责可靠交付（包括差错处理、流量控制等） 。采用这种设计思路的好处是：网络的造价大大降低，运行方式灵活，能够适应多种应用。"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://twilight218.github.io/image/Internet/网络层协议.png"><meta property="og:image" content="https://twilight218.github.io/image/Internet/IP地址.png"><meta property="og:image" content="https://twilight218.github.io/image/Internet/指派范围.png"><meta property="og:image" content="https://twilight218.github.io/image/Internet/IP数据报.png"><meta property="og:image" content="https://twilight218.github.io/image/Internet/路由表.png"><meta property="article:published_time" content="2022-01-16T05:14:41.000Z"><meta property="article:author" content="叶润繁"><meta property="article:tag" content="计算机网络"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/image/Internet/网络层协议.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://twilight218.github.io/2022/01/16/%E7%BD%91%E7%BB%9C%E5%B1%82/"},"headline":"网络层","image":["https://twilight218.github.io/image/Internet/网络层协议.png","https://twilight218.github.io/image/Internet/IP地址.png","https://twilight218.github.io/image/Internet/指派范围.png","https://twilight218.github.io/image/Internet/IP数据报.png","https://twilight218.github.io/image/Internet/路由表.png"],"datePublished":"2022-01-16T05:14:41.000Z","author":{"@type":"Person","name":"叶润繁"},"publisher":{"@type":"Organization","name":"Yrf's blog","logo":{"@type":"ImageObject","url":"https://twilight218.github.io/img/logo.svg"}},"description":"互联网的先驱者提出一种崭新的网络设计思路，不同于电信网提供端到端的可靠传输服务，网络层向上只提供简单灵活的、无连接的、尽最大努力交付的数据报服务。如果主机（即端系统）中的进程之间的通信需要是可靠的，那么就由网络的主机中的运输层负责可靠交付（包括差错处理、流量控制等） 。采用这种设计思路的好处是：网络的造价大大降低，运行方式灵活，能够适应多种应用。"}</script><link rel="canonical" href="https://twilight218.github.io/2022/01/16/%E7%BD%91%E7%BB%9C%E5%B1%82/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.4.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Yrf&#039;s blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Gitter" href="https://gitter.im/"><i class="fab fa-wpexplorer"></i></a><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/twilight218/twilight218.github.io"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2022-01-16T05:14:41.000Z" title="2022/1/16 下午1:14:41">2022-01-16</time></span><span class="level-item"><a class="link-muted" href="/categories/science/">science</a></span><span class="level-item">29 minutes read (About 4390 words)</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>&nbsp;visits</span></div></div><h1 class="title is-3 is-size-4-mobile">网络层</h1><div class="content"><p>互联网的先驱者提出一种崭新的网络设计思路，不同于电信网提供端到端的可靠传输服务，网络层向上只提供简单灵活的、<strong>无连接的、尽最大努力交付</strong>的数据报服务。如果主机（即端系统）中的进程之间的通信需要是可靠的，那么就由网络的主机中的<strong>运输层</strong>负责可靠交付（包括差错处理、流量控制等） 。采用这种设计思路的好处是：网络的造价大大降低，运行方式灵活，能够适应多种应用。</p>
+<span id="more"></span>
+
+<h3 id="网际协议IP"><a href="#网际协议IP" class="headerlink" title="网际协议IP"></a>网际协议IP</h3><ul>
+<li>网际协议 IP 是 TCP/IP 体系中两个最主要的协议之一。</li>
+<li>与 IP 协议配套使用的还有三个协议：<ul>
+<li>地址解析协议 ARP(Address Resolution Protocol)</li>
+<li>网际控制报文协议 ICMP(Internet Control Message Protocol)</li>
+<li>网际组管理协议 IGMP(Internet Group Management Protocol)</li>
+</ul>
+</li>
+</ul>
+<img src="/image/Internet/网络层协议.png" style="zoom:80%;" />
+
+<h4 id="虚拟互连网络"><a href="#虚拟互连网络" class="headerlink" title="虚拟互连网络"></a>虚拟互连网络</h4><ul>
+<li>将网络互相连接起来要使用一些中间设备。<ul>
+<li>物理层中间设备：转发器 (repeater)。</li>
+<li>数据链路层中间设备：网桥 或 桥接器 (bridge)。</li>
+<li>网络层中间设备：路由器(router)。</li>
+<li>网络层以上中间设备：网关(gateway)。</li>
+</ul>
+</li>
+<li>当中间设备是转发器或网桥时，一般并不称之为网络互连，因为这仅仅是把一个网络扩大了，而这仍然是一个网络。</li>
+<li>网络互连都是指用路由器进行网络互连和路由选择。</li>
+<li>使用虚拟互连网络的好处是：当互联网上的主机进行通信时，就好像在一个网络上通信一样，而看不见互连的各具体的网络异构细节。</li>
+<li>如果在这种覆盖全球的 IP 网的上层使用 TCP 协议，那么就是现在的互联网 (Internet)。</li>
+</ul>
+<h4 id="分类的IP地址"><a href="#分类的IP地址" class="headerlink" title="分类的IP地址"></a>分类的IP地址</h4><ul>
+<li>IP 地址就是给每个连接在互联网上的主机（或路由器）分配一个在全世界范围是唯一的 32 位的标识符。</li>
+<li>IP地址的编制方法：<ul>
+<li>分类的 IP 地址。</li>
+<li>子网的划分。</li>
+<li>构成超网。</li>
+</ul>
+</li>
+<li>分类的IP地址每一类地址都由两个固定长度的字段组成，其中一个字段是网络号 net-id，它标志主机（或路由器）所连接到的网络，而另一个字段则是主机号 host-id，它标志该主机（或路由器）。</li>
+</ul>
+<img src="/image/Internet/IP地址.png" style="zoom:80%;" />
+
+<ul>
+<li>A类地址：网络号8位，1个字节，首位固定为0，只有7位可使用。主机号24位，3个字节。<ul>
+<li>可指派的网络号是126(即$2^7-2$​​​)。减2原因是：网络号字段全0的IP地址是个保留地址，表示“本网络”。网络号为127(即01111111)保留作为本地软件<strong>环回测试</strong>本主机进程之间的通信之用。目的地址为环回地址的IP数据报永远不会出现在任何网络上，因为网络号127的地址根本不是一个网络地址。</li>
+<li>每个A类网络可分配的最大主机数是$2^{24}-2$​，减2是因为全0的主机号字段表示IP地址是“本主机”所在的网络地址，比如5.6.7.8所在的网络地址为5.0.0.0，而全1表示该网络上的所有主机，比如5.255.255.255表示在网络5.0.0.0上的所有主机。</li>
+<li>IP地址空间共$2^{32}$个地址，整个A类地址空间共有$2^{31}$个地址，占整个IP地址空间的一半。</li>
+</ul>
+</li>
+<li>B类地址：网络号16位，2个字节，前两位固定为10，只有14位可用。主机号16位，2个字节。<ul>
+<li>由于前两位为10，所以网络号后14位不可能使网络号全0或全1，不存在减2,。但是实际上B类网络地址128.0.0.0是不指派的，可指派的最小网络地址是128.1.0.0。因此可指派的网络数为$2^{14}-1$，即16383。</li>
+<li>每个B类网络可分配的最大主机数是$2^{16}-2$​，即65534，减2是去掉全0和全1的主机号。</li>
+<li>整个B类地址空间有$2^{30}$个地址，占整个IP地址空间的25%。</li>
+</ul>
+</li>
+<li>C类地址：网络号24位，3个字节，前三位固定为110，只有21位可用。主机号8位，1个字节。<ul>
+<li>C类网络地址192.0.0.0也是不指派的，可指派的最小网络地址为192.0.1.0。因此C类地址网络数为$2^{21}-1$，即2097151。</li>
+<li>每个C类网络可分配的最大主机数是$2^8-2$，即254。</li>
+<li>整个C类地址空间有$2^{29}$个地址，占整个IP地址空间的12.5%。</li>
+</ul>
+</li>
+</ul>
+<img src="/image/Internet/指派范围.png" style="zoom:80%;" />
+
+<h4 id="重要特点"><a href="#重要特点" class="headerlink" title="重要特点"></a>重要特点</h4><ul>
+<li>IP 地址是一种分等级的地址结构。分两个等级的好处是：<ul>
+<li>IP 地址管理机构在分配 IP 地址时只分配网络号，而剩下的主机号则由得到该网络号的单位自行分配。这样就方便了 IP 地址的管理。</li>
+<li>路由器仅根据目的主机所连接的网络号来转发分组（而不考虑目的主机号），这样就可以使路由表中的项目数大幅度减少，从而减小了路由表所占的存储空间。</li>
+</ul>
+</li>
+<li>实际上 <strong>IP 地址是标志一个主机（或路由器）和一条链路的接口</strong>。<ul>
+<li>当一个主机同时连接到两个网络上时，该主机就必须同时具有两个相应的 IP 地址，其网络号 net-id 必须是不同的。这种主机称为多归属主机 (multihomed host)。</li>
+<li>n由于一个路由器至少应当连接到两个网络（这样它才能将 IP 数据报从一个网络转发到另一个网络），因此<strong>一个路由器至少应当有两个不同的 IP 地址</strong>。 </li>
+</ul>
+</li>
+<li>用转发器或网桥连接起来的若干个局域网仍为一个网络，因此<strong>这些局域网都具有同样的网络号 net-id</strong>。</li>
+<li>所有分配到网络号 net-id 的网络，无论是范围很小的局域网，还是可能覆盖很大地理范围的广域网，都是平等的。</li>
+</ul>
+<h4 id="IP地址和硬件地址"><a href="#IP地址和硬件地址" class="headerlink" title="IP地址和硬件地址"></a>IP地址和硬件地址</h4><ul>
+<li>硬件地址已固化在网卡的ROM上，因此常可以称为物理地址。而局域网的MAC帧中源地址和目的地址都是物理地址，又可称为MAC地址。这三种叫法可作为同义词。</li>
+<li>从层次的角度看，硬件地址是<strong>数据链路层和物理层使用的地址</strong>。IP 地址是<strong>网络层和以上各层使用的地址</strong>，是一种逻辑地址（称 IP 地址是逻辑地址是因为 IP 地址是用软件实现的）。</li>
+<li>IP数据报放入数据链路层的MAC帧后，整个IP数据报就成为MAC帧的数据，因而<strong>在数据链路层看不见数据报的IP地址</strong>。</li>
+<li><strong>在IP 层抽象的互联网上只能看到IP数据报。</strong>虽然IP数据报可能会经过路由器的转发，但在它的首部中的<strong>源地址和目的地址始终不变，经过的路由器的IP地址不会出现在IP数据报中</strong>。</li>
+<li>路由器只根据目的站的IP地址的网络号进行网络选择。</li>
+<li>在局域网的链路层，只能看见MAC帧。链路层收到MAC帧要丢弃原来的首部和尾部，在转发时要重新加上首部和尾部，这时<strong>首部中的源地址和目的地址就发生了改变。这种变化在上面的IP层是看不见的。</strong></li>
+<li>IP 层抽象的互联网屏蔽了下层很复杂的细节。在抽象的网络层上讨论问题，就能够使用统一的、抽象的 IP 地址研究主机和主机或主机和路由器之间的通信 。</li>
+</ul>
+<p>还有两个重要问题有待解决：</p>
+<ol>
+<li>主机和路由器怎样知道应当在MAC帧的首部填入什么样的硬件地址？</li>
+<li>路由器中的路由表是怎样得出的？</li>
+</ol>
+<h4 id="地址解析协议ARP"><a href="#地址解析协议ARP" class="headerlink" title="地址解析协议ARP"></a>地址解析协议ARP</h4><p>地址解析协议 ARP 是用来解决已经知道了一个机器（主机或路由器）的IP地址，如何找出其相应的硬件地址这样的问题的。</p>
+<p>每一个主机都设有一个 ARP 高速缓存 (ARP cache)，里面有所在的局域网上的各主机和路由器的 IP 地址到硬件地址的映射表。当主机 A 欲向<strong>本局域网上</strong>的某个主机 B 发送 IP 数据报时，就先在其 ARP 高速缓存中查看有无主机 B 的 IP 地址。如果有，就可查出其对应的硬件地址，再将此硬件地址写入 MAC 帧，然后通过局域网将该 MAC 帧发往此硬件地址。如果没有，主机A就自动运行ARP，按以下步骤找到B的硬件地址。</p>
+<ul>
+<li>ARP 进程在本局域网上<strong>广播发送</strong>一个 ARP 请求分组。请求分组中包含发送方硬件地址 、发送方 IP 地址 、 目标方硬件地址(未知时填 0) 、 目标方 IP 地址。</li>
+<li>主机B的IP地址与请求分组中的IP地址一样，就收下这个ARP请求分组，并向A发送响应分组，包括主机B的IP地址和硬件地址。<strong>ARP请求分组是广播发送的，但ARP响应分组是普通的单播，即从一个源地址发到一个目的地址</strong>。</li>
+<li>可能不久后B也会向A发送数据报，所以B在收到A的请求分组中，会把A的IP地址到硬件地址的映射写入自己的ARP高速缓存中。</li>
+<li>主机A收到主机B的响应分组后，就在ARP高速缓存中写入B的IP地址到硬件地址的映射。</li>
+</ul>
+<p>ARP对保存在高速缓存中的每一个映射地址项目都设置<strong>生存时间</strong>，超过生存时间的映射就从高速缓存中删掉。因为若主机B更换网络适配器，那么B的硬件地址就改变了，主机A再通过原先的映射无法找到主机B。过了生产时间后，A重新进行广播发送ARP请求分组，就可以再找到B。</p>
+<p>需要注意的是，<strong>ARP是解决同一个局域网上的主机或路由器的IP地址到硬件地址的映射问题</strong>。如果所要找的主机和源主机不在同一个局域网上，那么就要通过 ARP 找到一个<strong>位于本局域网上的某个路由器的硬件地址</strong>，然后把分组发送给这个路由器，让这个路由器把分组转发给下一个网络。剩下的工作就由下一个网络来做。路由器包括物理层、链路层、网络层，也可使用ARP协议。</p>
+<p>使用ARP四种典型情况：</p>
+<ol>
+<li>发送方是主机，要把 IP 数据报发送到本网络上的另一个主机。这时用 ARP 找到目的主机的硬件地址。</li>
+<li>发送方是主机，要把 IP 数据报发送到另一个网络上的一个主机。这时用 ARP 找到本网络上的一个路由器的硬件地址。剩下的工作由这个路由器来完成。</li>
+<li>发送方是路由器，要把 IP 数据报转发到本网络上的一个主机。这时用 ARP 找到目的主机的硬件地址。</li>
+<li>发送方是路由器，要把 IP 数据报转发到另一个网络上的一个主机。这时用 ARP 找到本网络上另一个路由器的硬件地址。剩下的工作由这个路由器来完成。</li>
+</ol>
+<p><strong>那为什么不直接使用硬件地址进行通信？</strong></p>
+<p>全世界存在着各式各样的网络，它们使用不同的硬件地址。要使这些异构网络能够互相通信就必须进行非常复杂的硬件地址转换工作，因此几乎是不可能的事。<strong>IP 编址把这个复杂问题解决了</strong>。连接到互联网的主机只需各自拥有一个唯一的 IP 地址，它们之间的通信就像连接在同一个网络上那样简单方便，因为上述的调用 ARP 的复杂过程都是由计算机软件自动进行的，对用户来说是看不见这种调用过程的。</p>
+<h4 id="IP数据报的格式"><a href="#IP数据报的格式" class="headerlink" title="IP数据报的格式"></a>IP数据报的格式</h4><p>IP数据报的格式能够说明IP协议具有什么功能。在TCP/IP的标准中，各种数据格式常以32位(即4字节)为单位来描述。</p>
+<img src="/image/Internet/IP数据报.png" style="zoom:80%;" />
+
+<p>一个 IP 数据报由首部和数据两部分组成。首部的前一部分是固定长度，共 20 字节，是所有 IP 数据报必须具有的。在首部的固定部分的后面是一些可选字段，其长度是可变的。</p>
+<ul>
+<li>版本:占 4 位，指 IP 协议的版本。目前的 IP 协议版本号为 4 (即 IPv4)。</li>
+<li>首部长度：占 4 位，可表示的最大数值是 15 个单位(一个单位为 4 字节)，因此 IP 的首部长度的最大值是 60 字节。</li>
+<li>总长度：占 16 位，指首部和数据之和的长度，单位为字节，因此数据报的最大长度为 65535 字节。总长度必须不超过最大传送单元 MTU。 </li>
+<li>标志(flag) ：占 3 位，目前只有前两位有意义。标志字段的最低位是 MF 。MF = 1 表示后面“还有分片”。MF = 0 表示最后一个分片。标志字段中间的一位是 DF 。只有当 DF = 0 时才允许分片。 </li>
+<li>片偏移：占13 位，指出：较长的分组在分片后某片在原分组中的相对位置。片偏移以 8 个字节为偏移单位。</li>
+<li>生存时间：占8 位，记为 TTL (Time To Live)，指示数据报在网络中可通过的路由器数的最大值。</li>
+<li>协议：占8 位，指出此数据报携带的数据使用何种协议，以便目的主机的 IP 层将数据部分上交给哪个处理过程。</li>
+<li>首部检验和：占16 位，<strong>只检验数据报的首部</strong>，不检验数据部分。这里不采用 CRC 检验码而采用简单的计算方法。</li>
+<li>源地址和目的地址各占4字节。</li>
+</ul>
+<h4 id="IP层转发分组流程"><a href="#IP层转发分组流程" class="headerlink" title="IP层转发分组流程"></a>IP层转发分组流程</h4><p>在路由表中，对每一条路由，最主要的是（目的网络地址，下一跳地址）</p>
+<img src="/image/Internet/路由表.png" style="zoom:80%;" />
+
+<p>IP 数据报的首部中没有地方可以用来指明“下一跳路由器的 IP 地址”,当路由器收到待转发的数据报，不是将下一跳路由器的 IP 地址填入 IP 数据报，而是送交下层的网络接口软件。网络接口软件使用 ARP 负责将下一跳路由器的 IP 地址转换成硬件地址，并将此硬件地址放在链路层的 MAC 帧的首部，然后根据这个硬件地址找到下一跳路由器。 </p>
+<p><strong>路由分组转发算法</strong></p>
+<ol>
+<li>从数据报的首部提取目的主机的 IP 地址 D, 得出目的网络地址为 N。</li>
+<li>若网络 <em>N</em> 与此路由器直接相连，则把数据报直接交付目的主机 <em>D</em>；否则是间接交付，执行3。</li>
+<li>若路由表中有目的地址为 <em>D</em> 的<strong>特定主机路由</strong>，则把数据报传送给路由表中所指明的下一跳路由器；否则，执行4。</li>
+<li>若路由表中有到达网络 <em>N</em> 的路由，则把数据报传送给路由表指明的下一跳路由器；否则，执行5。</li>
+<li>若路由表中有一个<strong>默认路由</strong>，则把数据报传送给路由表中所指明的默认路由器；否则，执行6。</li>
+<li>报告转发分组出错。</li>
+</ol>
+<p>关于路由表，没有给分组指明到某个网络的完整路径，路由表指出，到某个网络应当先到某个路由器（即下一跳路由器）。在到达下一跳路由器后，再继续查找其路由表，知道再下一步应当到哪一个路由器。这样一步一步地查找下去，直到最后到达目的网络。</p>
+<h3 id="划分子网和构造超网"><a href="#划分子网和构造超网" class="headerlink" title="划分子网和构造超网"></a>划分子网和构造超网</h3></div><div class="article-licensing box"><div class="licensing-title"><p>网络层</p><p><a href="https://twilight218.github.io/2022/01/16/网络层/">https://twilight218.github.io/2022/01/16/网络层/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>叶润繁</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2022-01-16</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2022/01/14/MySQL%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C/"><span class="level-item">MySQL基础操作</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="/img/kele.jpg" alt="叶润繁"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">叶润繁</p><p class="is-size-6 is-block">Web Developer</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>WUT</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">17</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">15</p></a></div></div></nav></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#网际协议IP"><span class="level-left"><span class="level-item">1</span><span class="level-item">网际协议IP</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#虚拟互连网络"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">虚拟互连网络</span></span></a></li><li><a class="level is-mobile" href="#分类的IP地址"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">分类的IP地址</span></span></a></li><li><a class="level is-mobile" href="#重要特点"><span class="level-left"><span class="level-item">1.3</span><span class="level-item">重要特点</span></span></a></li><li><a class="level is-mobile" href="#IP地址和硬件地址"><span class="level-left"><span class="level-item">1.4</span><span class="level-item">IP地址和硬件地址</span></span></a></li><li><a class="level is-mobile" href="#地址解析协议ARP"><span class="level-left"><span class="level-item">1.5</span><span class="level-item">地址解析协议ARP</span></span></a></li><li><a class="level is-mobile" href="#IP数据报的格式"><span class="level-left"><span class="level-item">1.6</span><span class="level-item">IP数据报的格式</span></span></a></li><li><a class="level is-mobile" href="#IP层转发分组流程"><span class="level-left"><span class="level-item">1.7</span><span class="level-item">IP层转发分组流程</span></span></a></li></ul></li><li><a class="level is-mobile" href="#划分子网和构造超网"><span class="level-left"><span class="level-item">2</span><span class="level-item">划分子网和构造超网</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/life/"><span class="level-start"><span class="level-item">life</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/science/"><span class="level-start"><span class="level-item">science</span></span><span class="level-end"><span class="level-item tag">16</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Git/"><span class="tag">Git</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/JDBC/"><span class="tag">JDBC</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/JavaWeb/"><span class="tag">JavaWeb</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/MySQL/"><span class="tag">MySQL</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/acm/"><span class="tag">acm</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/experience/"><span class="tag">experience</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/java%E5%9F%BA%E7%A1%80/"><span class="tag">java基础</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/java%E9%9B%86%E5%90%88/"><span class="tag">java集合</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/"><span class="tag">位运算</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%9B%BE%E8%AE%BA/"><span class="tag">图论</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%90%9C%E7%B4%A2/"><span class="tag">搜索</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/"><span class="tag">树状数组</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%BA%BF%E6%AE%B5%E6%A0%91/"><span class="tag">线段树</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"><span class="tag">计算机网络</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%A2%98%E8%A7%A3/"><span class="tag">题解</span><span class="tag">2</span></a></div></div></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Yrf&#039;s blog" height="28"></a><p class="is-size-7"><span>&copy; 2022 叶润繁</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a><br><span id="busuanzi_container_site_uv">Visited by <span id="busuanzi_value_site_uv">0</span> users</span></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.js" defer></script><script>window.addEventListener("load", function() {
+            document.querySelectorAll('[role="article"] > .content').forEach(function(element) {
+                renderMathInElement(element);
+            });
+        });</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
